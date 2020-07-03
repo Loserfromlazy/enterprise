@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="emterprise_sms" />
+        <module name="enterprise_center" />
+        <module name="enterprise_common" />
+        <module name="enterprise_common_cas" />
+        <module name="enterprise_common_service" />
+        <module name="enterprise_common_web" />
+        <module name="enterprise_interface" />
+        <module name="enterprise_pojo" />
+        <module name="enterprise_service" />
+        <module name="enterprise_service_indexcreate" />
+        <module name="enterprise_service_pagecreate" />
+        <module name="enterprise_web_center" />
+        <module name="enterprise_web_manager" />
+        <module name="enterprise_web_portal" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="emterprise_sms" target="1.8" />
+      <module name="enterprise" target="1.8" />
+      <module name="enterprise_center" target="1.8" />
+      <module name="enterprise_common" target="1.8" />
+      <module name="enterprise_common_cas" target="1.8" />
+      <module name="enterprise_common_service" target="1.8" />
+      <module name="enterprise_common_web" target="1.8" />
+      <module name="enterprise_interface" target="1.8" />
+      <module name="enterprise_pojo" target="1.8" />
+      <module name="enterprise_service" target="1.8" />
+      <module name="enterprise_service_indexcreate" target="1.8" />
+      <module name="enterprise_service_pagecreate" target="1.8" />
+      <module name="enterprise_web_center" target="1.8" />
+      <module name="enterprise_web_manager" target="1.8" />
+      <module name="enterprise_web_portal" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

@@ -1,0 +1,15 @@
+com\yhr\enterprise\service\SpuService.class
+com\yhr\enterprise\service\TemplateService.class
+com\yhr\enterprise\service\AdService.class
+com\yhr\enterprise\service\OrderService.class
+com\yhr\enterprise\service\UserService.class
+com\yhr\enterprise\service\CartService.class
+com\yhr\enterprise\service\SkuSearchService.class
+com\yhr\enterprise\service\SpecService.class
+com\yhr\enterprise\service\AdminService.class
+com\yhr\enterprise\service\ParaService.class
+com\yhr\enterprise\service\BrandService.class
+com\yhr\enterprise\service\OrderItemService.class
+com\yhr\enterprise\service\SkuService.class
+com\yhr\enterprise\service\CategoryService.class
+com\yhr\enterprise\service\AlbumService.class

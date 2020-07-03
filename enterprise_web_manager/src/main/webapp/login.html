@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台登录</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="css/theme-chalk.css">
+    <link rel="stylesheet" href="css/login_style.css">
+</head>
+<body background="/img/logingBg.jpg"
+style=" background-repeat:no-repeat ;
+background-size:100% 100%;
+background-attachment: fixed;">
+<div id="app">
+    <form class="loginForm clear" action="/login" method="POST">
+        <div class="loginMain">
+
+            <div class="loginCon">
+                <h1 style="color: #edd545">企业电商后台系统</h1>
+              <span class="el-form-item">
+                <span class="userIcon"></span>
+                <span class="el-input">
+                  <input class="el-input__inner" name="username" placeholder="管理员账号"/>
+                </span>
+              </span>
+                <span class="el-form-item">
+                <span class="pwdIcon"></span>
+                <span class="el-input">
+                  <input class="el-input__inner" name="password"  placeholder="密码"/>
+                </span>
+              </span>
+            </div>
+            <div class="loginBtn">
+                <input type="submit" class="el-button el-button--primary" value="登录">
+            </div>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

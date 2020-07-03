@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="enterprise_service_indexcreate:war">
+    <output-path>$PROJECT_DIR$/enterprise_service_indexcreate/target</output-path>
+    <root id="archive" name="enterprise_service_indexcreate-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="enterprise_service_indexcreate:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                          http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+	<!--连接工厂-->
+	<rabbit:connection-factory id="connectionFactory" host="127.0.0.1" port="5672" username="guest" password="guest" publisher-confirms="true"/>
+	<rabbit:admin connection-factory="connectionFactory"></rabbit:admin>
+	<!--队列-->
+	<rabbit:queue name="queue.sms"></rabbit:queue>
+	<rabbit:queue name="pagecreate"/>
+	<rabbit:queue name="escreate"/>
+	<rabbit:queue name="pagedelete"/>
+	<rabbit:queue name="esdelete"/>
+	<rabbit:template id="rabbitTemplate" connection-factory="connectionFactory" />
+	<rabbit:fanout-exchange name="enterprise.goodput">
+		<rabbit:bindings>
+			<rabbit:binding queue="pagecreate"></rabbit:binding>
+			<rabbit:binding queue="escreate"></rabbit:binding>
+		</rabbit:bindings>
+	</rabbit:fanout-exchange>
+	<rabbit:fanout-exchange name="enterprise.goodpull">
+		<rabbit:bindings>
+			<rabbit:binding queue="pagedelete"></rabbit:binding>
+			<rabbit:binding queue="esdelete"></rabbit:binding>
+		</rabbit:bindings>
+	</rabbit:fanout-exchange>
+	
+</beans>

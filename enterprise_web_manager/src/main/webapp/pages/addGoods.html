@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加商品</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- 上传图片框样式，不使用上传组件可以删除此样式 -->
+    <style>
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 150px;
+            height: 70px;
+            line-height: 150px;
+            text-align: center;
+        }
+        .avatar {
+            width: 150px;
+            height: 70px;
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="content-header">
+
+    <h1>管理<small>/新增商品</small></h1>
+    <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>管理</el-breadcrumb-item>
+        <el-breadcrumb-item>新增商品</el-breadcrumb-item>
+    </el-breadcrumb>
+
+    <template>
+        <div>
+            <!-- 卡片视图 -->
+            <el-card height="100%">
+                <!-- 提示区域 -->
+                <el-alert title="添加商品信息" type="info" center show-icon :closable="false"></el-alert>
+
+                <!-- 步骤条区域 -->
+                <el-steps :space="200" :active="activeIndex - 0" finish-status="success" align-center>
+                    <el-step title="商品分类"></el-step>
+                    <el-step title="商品信息"></el-step>
+                    <el-step title="商品属性"></el-step>
+                </el-steps>
+
+                <!-- tab栏区域 -->
+                <el-tabs :tab-position="'left'" v-model="activeIndex" style="height: 100%">
+                    <el-tab-pane label="商品分类" name='0'>
+                        <div class="block">
+                            <el-select v-model="selectvalue1" placeholder="请选择">
+                                <el-option
+                                        v-for="item in options1"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id"
+                                       >
+                                </el-option>
+                            </el-select>
+                            <el-button type="success" icon="el-icon-check" circle @click="changehandel1()"></el-button>
+                            <el-select v-model="selectvalue2" placeholder="请选择">
+                                <el-option
+                                        v-for="item in options2"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id"
+                                        >
+                                </el-option>
+                            </el-select>
+                            <el-button type="success" icon="el-icon-check" circle @click="changehandel2()"></el-button>
+                            <el-select v-model="selectvalue3" placeholder="请选择">
+                                <el-option
+                                        v-for="item in options3"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                            <el-button type="success" icon="el-icon-check" circle @click="changehandel3()"></el-button>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="商品信息" name='1'>
+                        <el-form label-width="80px">
+                            <el-form-item label="商品分类">
+                                {{selectname1}}/{{selectname2}}/{{selectname3}}
+                            </el-form-item>
+                            <el-form-item label="商品名称"><el-input v-model="pojo.spu.name"></el-input></el-form-item>
+                            <el-form-item label="副标题"><el-input v-model="pojo.spu.caption"></el-input></el-form-item>
+                            <el-form-item label="商品品牌">
+                                <el-select v-model="pojo.spu.brandId" filterable placeholder="请选择">
+                                    <el-option
+                                            v-for="item in brandList"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="商品介绍"><el-input v-model="pojo.spu.introduction"></el-input></el-form-item>
+                            <el-form-item label="商品货号"><el-input v-model="pojo.spu.sn"></el-input></el-form-item>
+                        </el-form>
+                    </el-tab-pane>
+                    <el-tab-pane label="商品属性" name='2'>
+                        <el-form label-width="80px">
+                            <el-form-item label="参数模板">
+                                <el-select v-model="templateId" filterable placeholder="请选择">
+                                    <el-option
+                                            v-for="item in templateList"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <!--<el-button type="success" icon="el-icon-check" circle @click="suretemplate()"></el-button>-->
+                            <el-form-item label="商品详情"><el-input v-model="pojo.spu.introduction"></el-input></el-form-item>
+                        </el-form>
+                    </el-tab-pane>
+                </el-tabs>
+
+                <el-button type="primary" @click="submit()">提交审核</el-button>
+            </el-card>
+        </div>
+    </template>
+    </div>
+</div>
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.js"></script>
+<script src="/js/elementui.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data(){
+            return {
+                tableData: [],
+                skuData:[],
+                currentPage: 1,
+                total: 10,
+                size: 10,
+                searchMap: {},
+                pojo: {},
+                formVisible: false,
+                imageUrl: '',
+                activeIndex: '0',
+                options1:[],
+                options2:[],
+                options3:[],
+                selectvalue1:"",
+                selectname1:"",
+                selectname2:"",
+                selectname3:"",
+                selectvalue2:"",
+                selectvalue3:"",
+                brandList:[],
+                templateList:[],
+                templateId:"",
+                paraList:[],
+                para:[],
+                specList:[],
+                spec:[]
+            }
+        },
+        created(){
+            this.fetchData();
+            axios.get(`/category/findcategoryTree.do?id=0`).then(response =>{
+                this.options1=response.data;
+            });
+            axios.get(`/brand/findAll.do`).then(response =>{
+                this.brandList=response.data;
+            });
+            axios.get(`/template/findAll.do`).then(response =>{
+                this.templateList=response.data;
+            })
+        },
+        methods:{
+            fetchData (){
+                axios.post(`/spu/findPage.do?page=${this.currentPage}&size=${this.size}`,this.searchMap).then(response => {
+                    this.tableData = response.data.row;
+                    this.total = response.data.total;
+                });
+
+            },
+            changehandel1(){
+                axios.get(`/category/findcategoryTree.do?id=${this.selectvalue1}`).then(response =>{
+                    this.options2=response.data;
+                });
+                axios.get(`/category/findById.do?id=${this.selectvalue1}`).then(response=>{
+                    this.selectname1=response.data.name;
+                })
+            },
+            changehandel2(){
+                axios.get(`/category/findcategoryTree.do?id=${this.selectvalue2}`).then(response =>{
+                    this.options3=response.data;
+                });
+                axios.get(`/category/findById.do?id=${this.selectvalue2}`).then(response=>{
+                    this.selectname2=response.data.name;
+                })
+            },
+            changehandel3(){
+                axios.get(`/category/findById.do?id=${this.selectvalue3}`).then(response=>{
+                    this.selectname3=response.data.name;
+                })
+            },
+            // suretemplate(){
+            //     var x=this.templateId
+            //     this.searchMap={templateId:x};
+            //     axios.post(`/para/findList.do?`,this.searchMap).then(response => {
+            //         this.paraList = response.data;
+            //     });
+            //     axios.post(`/spec/findList.do?`,this.searchMap).then(response => {
+            //         this.specList = response.data;
+            //     });
+            // },
+            submit(){
+                // this.pojo.image= this.imageUrl; //如页面有图片上传功能放开注释
+                axios.post(`/spu/save.do`,this.pojo).then(response => {
+                    window.location="/main.html"
+                });
+            },
+            save (){
+                // this.pojo.image= this.imageUrl; //如页面有图片上传功能放开注释
+                axios.post(`/spu/${this.pojo.id==null?'add':'update'}.do`,this.pojo).then(response => {
+                    this.fetchData (); //刷新列表
+                    this.formVisible = false ;//关闭窗口
+                });
+            },
+            edit (id){
+                this.formVisible = true // 打开窗口
+                // 调用查询
+                axios.get(`/spu/findById.do?id=${id}`).then(response => {
+                    this.pojo = response.data;
+                    // this.imageUrl=this.pojo.image //显示图片  如页面有图片上传功能放开注释
+                })
+            },
+            dele (id){
+                this.$confirm('确定要删除此记录吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then( () => {
+                    axios.get(`/spu/delete.do?id=${id}`).then(response => {
+                        this.fetchData (); //刷新列表
+                    })
+                })
+            },
+            handleChange(value) {
+                console.log(value);
+            },
+            /* ****图片上传相关代码  如页面有图片上传功能放开注释 ****
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = file.response;
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            }*/
+        }
+    })
+</script>
+</html>

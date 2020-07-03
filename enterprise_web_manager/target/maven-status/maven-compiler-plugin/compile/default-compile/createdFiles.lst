@@ -1,0 +1,16 @@
+com\yhr\enterprise\controller\LoginController.class
+com\yhr\enterprise\controller\AdController.class
+com\yhr\enterprise\controller\AlbumController.class
+com\yhr\enterprise\controller\TemplateController.class
+com\yhr\enterprise\controller\ParaController.class
+com\yhr\enterprise\controller\BrandController.class
+com\yhr\enterprise\controller\SpuController.class
+com\yhr\enterprise\controller\SkuController.class
+com\yhr\enterprise\controller\AdminController.class
+com\yhr\enterprise\controller\CategoryController.class
+com\yhr\enterprise\controller\OrderController.class
+com\yhr\enterprise\controller\UploadController.class
+com\yhr\enterprise\controller\UserDetailsServiceImpl.class
+com\yhr\enterprise\controller\OrderItemController.class
+com\yhr\enterprise\controller\SpecController.class
+com\yhr\enterprise\controller\UserController.class

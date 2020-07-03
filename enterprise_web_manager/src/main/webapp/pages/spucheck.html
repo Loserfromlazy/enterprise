@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>spu管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- 上传图片框样式，不使用上传组件可以删除此样式 -->
+    <style>
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 150px;
+            height: 70px;
+            line-height: 150px;
+            text-align: center;
+        }
+        .avatar {
+            width: 150px;
+            height: 70px;
+            display: block;
+        }
+
+    </style>
+</head>
+<body class="hold-transition">
+<div id="app">
+
+    <div class="content-header">
+        <h1>审核<small>spu审核</small></h1>
+        <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>审核</el-breadcrumb-item>
+            <el-breadcrumb-item>spu审核</el-breadcrumb-item>
+        </el-breadcrumb>
+    </div>
+
+    <div class="app-container">
+        <div class="box">
+            <div class="filter-container">
+                <!--查询表单-->
+                <el-form :inline="true" >
+
+          <el-form-item label="SPU名">
+<el-input v-model="searchMap.name" placeholder="SPU名" class="filter-item" ></el-input></el-form-item>
+                <el-button class="dalfBut" @click="fetchData()">查询</el-button>
+
+                </el-form>
+            </div>
+
+            <el-table :data="tableData" border style="width: 100%">
+                <el-table-column
+                        prop="id"
+                        label="商品编号">
+                </el-table-column>
+                <el-table-column
+                        label="图片">
+                    <template slot-scope="scope"  >
+                        <img :src="scope.row.image" width="100" height="200">
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="商品名称">
+                </el-table-column>
+                <el-table-column
+                        prop="sn"
+                        label="货号">
+                </el-table-column>
+                <el-table-column  label="是否上架" width="80">
+                    <template slot-scope="scope">
+                        <el-switch disabled
+                                   v-model="scope.row.isMarketable"
+                                   active-color="#13ce66"
+                                   inactive-color="#ff4949"
+                                   active-value="1"
+                                   inactive-value="0">
+                        </el-switch>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="saleNum"
+                        label="销量">
+                </el-table-column>
+                <el-table-column
+                        prop="status"
+                        label="审核状态">
+                </el-table-column>
+                <el-table-column label="操作"  >
+                    <!--spuId=scope.row.id-->
+                    <template slot-scope="scope">
+                        <el-button @click="formVisible=true;spuId=scope.row.id" size="mini" type="primary" size="small">审核</el-button>
+                        <!--<el-button @click="pull(scope.row.id)" size="mini" type="primary" size="small">下架</el-button>-->
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="pagination-container">
+                <el-pagination
+                        class="pagiantion"
+                        @size-change="fetchData"
+                        @current-change="fetchData"
+                        :current-page.sync="currentPage"
+                        :page-sizes="[10, 20, 30, 40]"
+                        :page-size="size"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="total">
+                </el-pagination>
+            </div>
+            <div class="add-form">
+                <!--弹出窗口-->
+                <el-dialog  title="编辑" :visible.sync="formVisible" >
+                    <el-form label-width="80px">
+                        <el-form-item label="spuId"><el-input v-model="spuId" disabled></el-input></el-form-item>
+                        <el-form-item label="审核状态">
+                            <el-switch
+                                       v-model="checkMap.status"
+                                       active-color="#13ce66"
+                                       inactive-color="#ff4949"
+                                       active-value="1"
+                                       inactive-value="0">
+                            </el-switch>
+                        </el-form-item>
+                        <el-form-item label="审核信息"><el-input v-model="checkMap.message"></el-input></el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="formVisible = false;audit(spuId)">保存</el-button>
+                                <el-button @click="formVisible = false" >关闭</el-button>
+                            </el-form-item>
+                    </el-form>
+                </el-dialog>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+</body>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.js"></script>
+<script src="/js/elementui.js"></script>
+<script>
+     new Vue({
+        el: '#app',
+        data(){
+            return {
+                tableData: [],
+                currentPage: 1,
+                total: 10,
+                size: 10,
+                searchMap: {},
+                pojo: {},
+                formVisible: false,
+                imageUrl: '',
+                options1:[],
+                options2:[],
+                options3:[],
+                selectvalue1:"",
+                selectvalue2:"",
+                selectvalue3:"",
+                brandList:[],
+                specname:"",
+                spec:"",
+                checkMap:{},
+                spuId:''
+            }
+        },
+        created(){
+            this.fetchData();
+            this.searchMap={isDelete:0,status:0};
+            axios.get(`/category/findcategoryTree.do?id=0`).then(response =>{
+                this.options1=response.data;
+            });
+            axios.get(`/brand/findAll.do`).then(response =>{
+                this.brandList=response.data;
+            });
+        },
+        methods:{
+            fetchData (){
+                this.searchMap={isDelete:0,status:0};
+                axios.post(`/spu/findPage.do?page=${this.currentPage}&size=${this.size}`,this.searchMap).then(response => {
+                    this.tableData = response.data.row;
+                    this.total = response.data.total;
+                });
+            },
+            showCheck(id){
+                location.href="sku.html?id="+id;
+            },
+            save (){
+                this.pojo.category1Id=this.selectvalue1;
+                this.pojo.category2Id=this.selectvalue2;
+                this.pojo.category3Id=this.selectvalue3;
+                this.pojo.image= this.imageUrl; //如页面有图片上传功能放开注释
+                var str = `{\"${this.specname}\":[${this.spec}]}`;
+                console.log(str);console.log(this.specname+"  "+this.spec);
+                this.pojo.specItems=str;
+                axios.post(`/spu/${this.pojo.id==null?'add':'update'}.do?specname=${this.specname}`,this.pojo).then(response => {
+                    console.log(this.specname);
+                    this.fetchData (); //刷新列表
+                    this.formVisible = false ;//关闭窗口
+                });
+            },
+            changehandel1(){
+                axios.get(`/category/findcategoryTree.do?id=${this.selectvalue1}`).then(response =>{
+                    this.options2=response.data;
+                });
+            },
+            changehandel2(){
+                axios.get(`/category/findcategoryTree.do?id=${this.selectvalue2}`).then(response =>{
+                    this.options3=response.data;
+                });
+            },
+            edit (id){
+                this.formVisible = true // 打开窗口
+                // 调用查询
+                axios.get(`/spu/findById.do?id=${id}`).then(response => {
+                    this.pojo = response.data;
+                    this.imageUrl=this.pojo.image //显示图片  如页面有图片上传功能放开注释
+                })
+            },
+            dele (id){
+                this.$confirm('确定要删除此记录吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then( () => {
+                    axios.get(`/spu/logicDelete.do?id=${id}`).then(response => {
+                        this.fetchData (); //刷新列表
+                    })
+                })
+            },
+            audit(id){
+                this.checkMap.spuId=id;
+                axios.post(`/spu/audit.do`,this.checkMap).then(response=>{
+                        this.fetchData();//刷新
+                })
+            },
+            pull(id){
+                axios.get(`/spu/pull.do?id=${id}`).then(response =>{
+                    this.fetchData();//刷新
+                })
+            },
+            // ****图片上传相关代码  如页面有图片上传功能放开注释 ****
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = file.response;
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            }
+        }
+    })
+</script>
+</html>

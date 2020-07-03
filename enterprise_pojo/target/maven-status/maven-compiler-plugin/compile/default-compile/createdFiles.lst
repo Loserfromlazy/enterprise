@@ -1,0 +1,17 @@
+com\yhr\enterprise\pojo\Template.class
+com\yhr\enterprise\pojo\Category.class
+com\yhr\enterprise\pojo\Goods.class
+com\yhr\enterprise\pojo\Spu.class
+com\yhr\enterprise\pojo\Sku.class
+com\yhr\enterprise\pojo\Spec.class
+com\yhr\enterprise\pojo\Ad.class
+com\yhr\enterprise\pojo\Admin.class
+com\yhr\enterprise\pojo\Album.class
+com\yhr\enterprise\entity\Result.class
+com\yhr\enterprise\pojo\Order.class
+com\yhr\enterprise\entity\PageResult.class
+com\yhr\enterprise\pojo\CategoryBrand.class
+com\yhr\enterprise\pojo\Para.class
+com\yhr\enterprise\pojo\User.class
+com\yhr\enterprise\pojo\OrderItem.class
+com\yhr\enterprise\pojo\Brand.class
